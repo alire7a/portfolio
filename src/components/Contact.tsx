@@ -24,7 +24,12 @@ export function Contact() {
           <span className="dot" aria-hidden /> Have a product that should feel alive?
         </p>
         <h2 className="contact__title" data-split>
-          Let’s build something <em>that moves.</em>
+          Let’s make
+          <br />
+          something{' '}
+          <em className="shine">amazing</em>
+          <br />
+          together.
         </h2>
 
         <a className="contact__email" href={`mailto:${profile.email}`} data-reveal>
@@ -34,6 +39,9 @@ export function Contact() {
         <div className="contact__actions" data-reveal>
           <Button variant="solid" onClick={copy}>
             {copied ? 'Copied ✓' : 'Copy email'}
+          </Button>
+          <Button href={profile.telegram} external>
+            Telegram ↗
           </Button>
           <Button href={profile.github} external>
             GitHub ↗

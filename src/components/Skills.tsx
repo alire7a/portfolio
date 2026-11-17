@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { skills } from '../data/content'
 import { SectionHeader } from './SectionHeader'
 
@@ -16,16 +17,19 @@ export function Skills() {
         />
 
         <div className="skills__list" data-stagger>
-          {skills.map((s) => (
-            <div key={s.group} className="skills__row">
-              <h3 className="skills__group">{s.group}</h3>
-              <ul className="skills__items">
+          {skills.map((s, i) => (
+            <div key={s.group} className="skills__group">
+              <h3 className="skills__head">
+                <span className="skills__num">{String(i + 1).padStart(2, '0')}</span>
+                {s.group}
+              </h3>
+              <p className="skills__items">
                 {s.items.map((item) => (
-                  <li key={item} className="chip">
-                    {item}
-                  </li>
+                  <Fragment key={item}>
+                    <span className="skills__item">{item}</span>{' '}
+                  </Fragment>
                 ))}
-              </ul>
+              </p>
             </div>
           ))}
         </div>

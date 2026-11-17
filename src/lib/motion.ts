@@ -93,7 +93,7 @@ export function useScrollChoreography() {
           onSplit: (self) =>
             gsap.from(self.lines, {
               ...reveal,
-              yPercent: 110,
+              yPercent: 130,
               rotate: 2.5,
               transformOrigin: '0% 100%',
               stagger: 0.09,

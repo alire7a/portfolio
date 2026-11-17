@@ -162,8 +162,9 @@ em { font-family: var(--font-serif); font-style: italic; font-weight: 400; lette
 }
 .chip:hover { border-color: var(--accent); color: var(--fg); transform: translateY(-2px); }
 
-/* SplitText line masks need room for descenders */
-.split-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+/* SplitText line masks clip at their padding edge: pad the mask (not the line) so descenders
+   (g, y) and italic overhangs aren't shaved on tight line-heights; negative margins keep layout. */
+.split-line-mask { padding: 0 0.12em 0.24em; margin: 0 -0.12em -0.24em; }
 
 /* ───────────────────────── Scene & grain ───────────────────────── */
 .scene-wrap {
@@ -434,6 +435,8 @@ html.is-loading { overflow: hidden; }
 .section { position: relative; padding: var(--section-y) 0; }
 
 .section-header { margin-bottom: clamp(48px, 7vw, 96px); }
+/* Label-only header (no title, e.g. About): it sits right on top of its content. */
+.section-header:not(:has(.section-header__title)) { margin-bottom: clamp(24px, 3vw, 40px); }
 .section-header__meta {
   display: flex; align-items: center; gap: 16px;
   font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
@@ -467,7 +470,7 @@ html.is-loading { overflow: hidden; }
 .about__aside { position: sticky; top: 110px; }
 .about__grid {
   display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(32px, 4vw, 64px);
-  margin-top: clamp(72px, 10vw, 140px);
+  margin-top: clamp(48px, 6vw, 80px);
 }
 
 /* ───── Particle portrait frame ─────
@@ -530,20 +533,36 @@ html.is-loading { overflow: hidden; }
   .about__grid { grid-template-columns: 1fr; max-width: none; }
 }
 
-/* Skills */
-.skills__list { border-top: 1px solid var(--line); }
-.skills__row {
-  display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 24px;
-  padding: 28px 0;
-  border-bottom: 1px solid var(--line);
+/* Skills: editorial lists, no chips or rules. */
+.skills__list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(44px, 5vw, 80px) clamp(32px, 5vw, 96px);
 }
-.skills__group { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; padding-top: 6px; }
-.skills__items { display: flex; flex-wrap: wrap; gap: 8px; max-width: min(620px, 100%); }
-@media (min-width: 1100px) {
-  .skills__row { max-width: 64%; } /* right side stays clear for the WebGL shape */
+@media (min-width: 900px) {
+  .skills__list { grid-template-columns: repeat(2, 1fr); }
+  .skills__group:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
-@media (max-width: 720px) {
-  .skills__row { grid-template-columns: 1fr; gap: 16px; }
+.skills__head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 18px;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+}
+.skills__num { color: var(--accent); font-variant-numeric: tabular-nums; }
+.skills__items {
+  max-width: 34ch;
+  font-size: clamp(1.25rem, 2.1vw, 1.9rem); font-weight: 400; line-height: 1.4; letter-spacing: -0.025em;
+  text-wrap: pretty;
+  /* Dark halo keeps the words crisp where the particle shape drifts behind them. */
+  text-shadow: 0 0 6px var(--bg), 0 0 18px var(--bg), 0 0 32px var(--bg);
+}
+.skills__group:last-child:nth-child(odd) .skills__items { max-width: none; }
+.skills__item { white-space: nowrap; color: rgba(236, 233, 226, 0.82); transition: color 0.35s, opacity 0.35s; }
+.skills__item:not(:last-child)::after { content: '/'; margin-left: 0.32em; color: var(--faint); }
+@media (hover: hover) and (pointer: fine) {
+  .skills__items:hover .skills__item { opacity: 0.4; }
+  .skills__items .skills__item:hover { opacity: 1; color: var(--accent); }
 }
 
 /* Work */
@@ -579,6 +598,13 @@ html.is-loading { overflow: hidden; }
   font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em;
 }
 .work__info { display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.work__kind { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.work__stack {
+  padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  transition: color 0.4s var(--ease-out), border-color 0.4s var(--ease-out);
+}
+.work__link:hover .work__stack, .work__link:focus-visible .work__stack { color: var(--tint, var(--fg)); border-color: currentColor; }
 .work__note { color: var(--muted); font-size: 14px; }
 .work__url {
   display: inline-flex; align-items: center; gap: 10px;
@@ -606,7 +632,10 @@ html.is-loading { overflow: hidden; }
   font-size: clamp(1.6rem, 3vw, 2.5rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.1;
 }
 .exp__at { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--muted); }
-.exp__points { display: grid; gap: 10px; margin-top: 20px; max-width: 62ch; color: rgba(236, 233, 226, 0.75); }
+.exp__points {
+  display: grid; gap: 10px; margin-top: 20px; max-width: 62ch; color: rgba(236, 233, 226, 0.75);
+  text-shadow: 0 0 6px var(--bg), 0 0 18px var(--bg), 0 0 32px var(--bg); /* stays crisp over the particle shape */
+}
 .exp__points li { position: relative; padding-left: 22px; }
 .exp__points li::before {
   content: ''; position: absolute; left: 0; top: 0.72em; width: 10px; height: 1px; background: var(--accent);
@@ -615,34 +644,29 @@ html.is-loading { overflow: hidden; }
   .exp__item { grid-template-columns: 1fr; gap: 12px; }
 }
 
-/* Awards */
-.awards__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.award {
-  display: flex; flex-direction: column; gap: 12px;
-  min-height: 260px;
-  padding: 28px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: rgba(8, 8, 10, 0.4);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: border-color 0.4s;
+/* AI workflow */
+.ai__body { display: grid; gap: clamp(40px, 5vw, 64px); }
+.ai__intro {
+  max-width: 34ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem); font-weight: 400; line-height: 1.25; letter-spacing: -0.025em;
+  text-wrap: pretty;
 }
-.award { position: relative; overflow: hidden; transform-style: preserve-3d; will-change: transform; }
-.award:hover { border-color: rgba(236, 233, 226, 0.35); }
-.award__glare {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 241, 201, 0.16), transparent 45%);
-  opacity: 0; transition: opacity 0.5s var(--ease-out);
+.ai__tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.ai__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ai__steps { border-top: 1px solid var(--line); }
+.ai__step {
+  display: grid; grid-template-columns: 64px 1fr; gap: 24px;
+  padding: clamp(24px, 3vw, 36px) 0;
+  border-bottom: 1px solid var(--line);
 }
-.award:hover .award__glare { opacity: 1; }
-.award__title, .award__detail, .award__year { transform: translateZ(30px); }
-.award__year { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.award__title { margin-top: auto; font-size: clamp(1.8rem, 2.6vw, 2.4rem); font-weight: 500; letter-spacing: -0.04em; }
-.award__detail { color: rgba(236, 233, 226, 0.7); font-size: 15px; }
+.ai__index { font-size: 13px; color: var(--muted); padding-top: 6px; font-variant-numeric: tabular-nums; }
+.ai__title { font-size: clamp(1.3rem, 2vw, 1.75rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; }
+.ai__detail { margin-top: 10px; max-width: 54ch; color: rgba(236, 233, 226, 0.7); }
+@media (min-width: 861px) {
+  .ai__body { max-width: 64%; } /* right side stays clear for the WebGL shape */
+}
 @media (max-width: 860px) {
-  .awards__grid { grid-template-columns: 1fr; }
-  .award { min-height: 0; }
+  .ai__step { grid-template-columns: 40px 1fr; gap: 16px; }
 }
 
 /* Contact */
@@ -651,10 +675,51 @@ html.is-loading { overflow: hidden; }
 .contact__eyebrow { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(236, 233, 226, 0.8); }
 .contact__title {
   margin-top: 28px;
-  max-width: 12ch;
-  font-size: clamp(3rem, 9vw, 9rem);
+  /* Three set lines; the middle one is the longest, so size to keep it on one line. */
+  font-size: clamp(2.3rem, 8.4vw, 8.5rem);
   font-weight: 500; line-height: 0.92; letter-spacing: -0.055em;
 }
+/* "shine": a light sweep crosses the word on a loop, two sparkles twinkle off its corner. */
+.shine {
+  position: relative;
+  /* Room for the italic overhang so background-clip doesn't shave the last glyph. */
+  padding-right: 0.12em; margin-right: -0.12em;
+  background: linear-gradient(105deg, var(--fg) 0%, var(--fg) 38%, #fff 46%, #f6ffd6 50%, #fff 54%, var(--fg) 62%, var(--fg) 100%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: shine-sweep 4.5s cubic-bezier(0.65, 0, 0.35, 1) 1.2s infinite;
+}
+@keyframes shine-sweep {
+  0% { background-position: 100% 0; }
+  45%, 100% { background-position: 0% 0; }
+}
+/* SplitText can leave an empty clone of the <em> at a line edge; hide it so it draws no sparkles. */
+.shine:empty { display: none; }
+/* The two sparkles are the word's own pseudo-elements, so SplitText sees plain text. */
+.shine::before,
+.shine::after {
+  content: '';
+  position: absolute;
+  aspect-ratio: 1;
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  transform: scale(0);
+  animation: shine-twinkle 4.5s ease-in-out 1.2s infinite;
+  pointer-events: none;
+}
+.shine::before { top: 0.06em; right: 0.04em; width: 0.22em; background: var(--accent); }
+.shine::after { top: 0.32em; right: -0.1em; width: 0.12em; background: #fff; animation-delay: 1.45s; }
+@keyframes shine-twinkle {
+  0%, 30% { transform: scale(0) rotate(0deg); opacity: 0; }
+  40% { transform: scale(1) rotate(45deg); opacity: 1; }
+  55%, 100% { transform: scale(0) rotate(90deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shine { animation: none; background-position: 50% 0; }
+  .shine::before, .shine::after { animation: none; transform: scale(1); opacity: 0.9; }
+}
+
 .contact__email {
   position: relative;
   margin-top: clamp(36px, 5vw, 60px);

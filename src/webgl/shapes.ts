@@ -1,7 +1,7 @@
 // Each shape is drawn once on a 2D canvas, then its filled pixels are sampled into
 // particle positions. Adding a new shape = adding one draw function.
 
-export type ShapeKey = 'code' | 'braces' | 'components' | 'browser' | 'branch' | 'spark' | 'mail' | 'halo' | 'portrait'
+export type ShapeKey = 'code' | 'braces' | 'components' | 'browser' | 'branch' | 'ai' | 'mail' | 'halo' | 'portrait'
 /** Shapes drawn on a canvas at startup; 'portrait' is sampled from a photo cutout and loads async. */
 type DrawnShape = Exclude<ShapeKey, 'portrait'>
 
@@ -11,6 +11,7 @@ const DEPTH = 0.22 // z thickness of the particle "extrusion"
 const HALO = 0.06 // share of particles floating loosely around the shape
 const EDGE = 0.35 // share of particles placed on outlines, so silhouettes read crisply
 
+const SANS = '"Inter Tight", "Helvetica Neue", Arial, sans-serif'
 const MONO = '"JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace'
 
 type Ctx2D = CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
@@ -49,6 +50,29 @@ const draws: Record<DrawnShape, Draw> = {
   halo: () => {},
   code: text('</>'),
   braces: text('{ }'),
+
+  // Bold "AI" with a sparkle off its top-right corner.
+  ai: (ctx) => {
+    ctx.font = `800 300px ${SANS}`
+    const w = ctx.measureText('AI').width
+    const size = (300 * S * 0.66) / w
+    ctx.font = `800 ${size}px ${SANS}`
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('AI', S * 0.42, S * 0.58)
+    const star = (cx: number, cy: number, r: number) => {
+      const k = r * 0.12
+      ctx.beginPath()
+      ctx.moveTo(cx, cy - r)
+      ctx.quadraticCurveTo(cx + k, cy - k, cx + r, cy)
+      ctx.quadraticCurveTo(cx + k, cy + k, cx, cy + r)
+      ctx.quadraticCurveTo(cx - k, cy + k, cx - r, cy)
+      ctx.quadraticCurveTo(cx - k, cy - k, cx, cy - r)
+      ctx.fill()
+    }
+    star(S * 0.85, S * 0.2, 62)
+    star(S * 0.94, S * 0.37, 24)
+  },
 
   // Envelope with a "new message" dot on the corner (cut out with a gap ring).
   mail: (ctx) => {
@@ -138,23 +162,6 @@ const draws: Record<DrawnShape, Draw> = {
     ctx.beginPath()
     ctx.arc(330, 275, 20, 0, Math.PI * 2)
     ctx.fill()
-  },
-
-  // Four-point sparkle with two small companions.
-  spark: (ctx) => {
-    const star = (cx: number, cy: number, r: number) => {
-      const k = r * 0.1
-      ctx.beginPath()
-      ctx.moveTo(cx, cy - r)
-      ctx.quadraticCurveTo(cx + k, cy - k, cx + r, cy)
-      ctx.quadraticCurveTo(cx + k, cy + k, cx, cy + r)
-      ctx.quadraticCurveTo(cx - k, cy + k, cx - r, cy)
-      ctx.quadraticCurveTo(cx - k, cy - k, cx, cy - r)
-      ctx.fill()
-    }
-    star(236, 276, 200)
-    star(420, 96, 56)
-    star(440, 220, 28)
   },
 }
 

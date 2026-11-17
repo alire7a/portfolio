@@ -34,7 +34,10 @@ export function Work() {
                 <span className="work__index">{String(i + 1).padStart(2, '0')}</span>
                 <span className="work__name">{p.name}</span>
                 <span className="work__info">
-                  <span className="work__kind">{p.kind}</span>
+                  <span className="work__kind">
+                    {p.kind}
+                    <span className="work__stack">{p.stack}</span>
+                  </span>
                   {p.note && <span className="work__note">{p.note}</span>}
                 </span>
                 <span className="work__url">

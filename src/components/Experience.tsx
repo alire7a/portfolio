@@ -10,18 +10,24 @@ export function Experience() {
           label="Experience"
           title={
             <>
-              Seven years, <em>fully</em> remote.
+              Seven years <em>in the game</em>.
             </>
           }
         />
 
         <ol className="exp__list" data-stagger>
           {experience.map((job) => (
-            <li key={job.company} className="exp__item">
+            <li key={job.role + job.period} className="exp__item">
               <div className="exp__period">{job.period}</div>
               <div className="exp__body">
                 <h3 className="exp__role">
-                  {job.role} <span className="exp__at">at</span> <span className="exp__company">{job.company}</span>
+                  {job.role}
+                  {'company' in job && (
+                    <>
+                      {' '}
+                      <span className="exp__at">at</span> <span className="exp__company">{job.company}</span>
+                    </>
+                  )}
                 </h3>
                 <ul className="exp__points">
                   {job.points.map((pt) => (

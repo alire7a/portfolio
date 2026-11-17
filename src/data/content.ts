@@ -11,6 +11,8 @@ export const profile = {
   email: 'alire7a.a@gmail.com',
   github: 'https://github.com/alire7a',
   githubHandle: 'alire7a',
+  telegram: 'https://t.me/Alir7a',
+  telegramHandle: '@Alir7a',
   cv: '/Alireza-Afshar-CV.pdf',
 }
 
@@ -21,7 +23,7 @@ export const hero = {
   specialties: ['React & Next.js', 'WebGL & GLSL', 'GSAP motion', 'Design systems', 'Data-dense UI'],
   /** Cycles in the "Shipped" column. */
   shipped: ['Iconly', 'Ozgar AI', 'Piqo Studio', 'Notify Me', 'Skale', 'Powerleaf'],
-  experience: '7+ years · 2 awards',
+  experience: '7+ years · 10+ launches',
 }
 
 export const about = {
@@ -29,9 +31,7 @@ export const about = {
     'Seven years building product interfaces and interactive web experiences for distributed teams. I care about the details people feel but rarely notice: the easing of a transition, the weight of a type scale, a page that moves beautifully without costing a millisecond of load time.',
   stats: [
     { value: 7, suffix: '+', label: 'Years shipping front-end' },
-    { value: 8, suffix: '', label: 'Selected launches' },
-    { value: 2, suffix: '', label: 'Award-winning builds' },
-    { value: 4, suffix: '', label: 'Years leading Iconly' },
+    { value: 10, suffix: '+', label: 'Project launches' },
   ],
   facts: [
     { label: 'Education', value: 'B.Sc. Computer Engineering' },
@@ -79,6 +79,7 @@ export const experience = [
       'Lead the front-end for Ozgar AI, an enterprise code-intelligence platform, covering product UI and the marketing site.',
       'Built data-dense interfaces for large legacy codebases: documentation views, ER and call diagrams, and search across thousands of code artifacts.',
       'Own dmazing.studio and set the front-end standard across client work: minimal builds, strong typography, tight performance budgets.',
+      'Built Powerleaf, a commercial product site in Webflow, tuned for performance and clean responsive behaviour.',
       'Review code, define component architecture and work directly with designers from concept to launch.',
     ],
   },
@@ -87,49 +88,72 @@ export const experience = [
     role: 'Front-End Developer',
     company: 'Piqo Studio',
     points: [
-      'Led front-end on Iconly, one of the best-known icon packs in the world. Marketing site and web app with large-scale icon search, preview and export.',
-      'Built piqo.studio, awarded in 2023 for design and performance: heavy motion with no cost to load time.',
+      'Led front-end on Iconly, a library of 40,000+ flat, animated and 3D icons. Marketing site and web app with large-scale icon search, preview and export.',
+      'Built piqo.studio: heavy motion and 3D with no cost to load time.',
       'Built Skale, an interactive site driven by animation and 3D web elements.',
       'Owned animation and 3D across studio projects and set the motion quality bar for client builds.',
     ],
   },
   {
     period: 'Alongside full-time roles',
-    role: 'Front-End Developer',
-    company: 'Muunect Studio & independent',
+    role: 'Freelance Developer',
     points: [
-      'Built the front-end for Notify Me (Best Value, Winter 2024): dashboard, onboarding and marketing pages.',
-      'Delivered Powerleaf, a production commercial product site built for performance and clean responsive behaviour.',
-      'Built the site for Kasra Design, an award-winning animation studio. A motion-heavy video showcase without hurting load performance.',
+      'Part-time front-end work with Muunect Studio: dashboards, onboarding flows and marketing pages for client products.',
+      'Freelance builds for independent clients, from commercial product sites to motion-heavy portfolios.',
+      'Same bar as my full-time work: pixel-accurate builds, tight performance budgets and clean handoff.',
+    ],
+  },
+  {
+    period: 'Ongoing',
+    role: 'Experimental projects',
+    points: [
+      'Building experimental web apps and native apps to try new ideas, tools and interaction patterns.',
+      'My playground for new frameworks, AI workflows and motion techniques before they reach client work.',
     ],
   },
 ]
+
+export const aiWorkflow = {
+  intro:
+    'I build with AI every day. It handles the scaffolding, refactors and first drafts, so ideas reach production in days, not weeks, and my hours go into motion, performance and polish.',
+  tools: ['Claude', 'Claude Code', 'ChatGPT', 'Cursor'],
+  steps: [
+    {
+      title: 'Prototype in hours',
+      detail: 'From a Figma file or a rough brief to a working build the same day. Ideas get tested on screen, not in meetings.',
+    },
+    {
+      title: 'Review every line',
+      detail: 'AI writes the first draft, I own the result. Every change is read, typed and tested before it ships.',
+    },
+    {
+      title: 'Spend the time on craft',
+      detail: 'Less boilerplate means more time for the easing, the type and the load budget: the details people feel.',
+    },
+  ],
+}
 
 export type Project = {
   name: string
   url: string
   display: string
   kind: string
+  stack: 'Next.js' | 'React' | 'Webflow'
   note?: string
   /** Gradient the WebGL particles shift to while this row is hovered. */
   tint: [string, string]
 }
 
 export const projects: Project[] = [
-  { name: 'Iconly', url: 'https://iconly.pro', display: 'iconly.pro', kind: 'Marketing site & web app', note: 'Icon search, preview & export at scale', tint: ['#6c4dff', '#c8b8ff'] },
-  { name: 'Ozgar AI', url: 'https://ozgar.ai', display: 'ozgar.ai', kind: 'Enterprise product UI & marketing', note: 'Code intelligence for legacy systems', tint: ['#1f8bff', '#9fe7ff'] },
-  { name: 'Piqo Studio', url: 'https://piqo.studio', display: 'piqo.studio', kind: 'Studio site', note: 'Award for design & performance, 2023', tint: ['#ff5a36', '#ffd6a0'] },
-  { name: 'Notify Me', url: 'https://notify-me.io', display: 'notify-me.io', kind: 'Dashboard, onboarding & marketing', note: 'Best Value, Winter 2024', tint: ['#11b5a4', '#c6f432'] },
-  { name: 'Powerleaf', url: 'https://powerleaf.com', display: 'powerleaf.com', kind: 'Commercial product site', tint: ['#2fa84f', '#d9ffb0'] },
-  { name: 'Skale', url: 'https://skale.space', display: 'skale.space', kind: 'Interactive 3D site', note: 'Animation & 3D-driven', tint: ['#ff3d8b', '#ffc2dc'] },
-  { name: 'Dmazing Studio', url: 'https://dmazing.studio', display: 'dmazing.studio', kind: 'Studio site', tint: ['#e8e4dc', '#ffffff'] },
-  { name: 'Kasra Design', url: 'https://kasradesign-web-client.vercel.app', display: 'Launching soon', kind: 'Motion-heavy studio portfolio', tint: ['#e0a43a', '#fff1c9'] },
-]
-
-export const awards = [
-  { year: '2023', title: 'Piqo Studio', detail: 'Award for design and performance. Front-end built by me.' },
-  { year: '2024', title: 'Notify Me', detail: 'Best Value, Winter 2024. Front-end built by me.' },
-  { year: 'Ongoing', title: 'Iconly', detail: 'Recognised internationally as a leading icon library. I built the site and web app.' },
+  { name: 'Dmazing Studio', url: 'https://dmazing.studio', display: 'dmazing.studio', kind: 'Studio site', stack: 'Next.js', tint: ['#e8e4dc', '#ffffff'] },
+  { name: 'Iconly Web App', url: 'https://web.iconly.pro', display: 'web.iconly.pro', kind: 'Icon dashboard', stack: 'React', note: 'Browse, customise & ship icons', tint: ['#3d5afe', '#b8c4ff'] },
+  { name: 'Iconly', url: 'https://iconly.pro', display: 'iconly.pro', kind: 'Product landing page', stack: 'Next.js', note: 'Marketing site for the Iconly web app', tint: ['#6c4dff', '#c8b8ff'] },
+  { name: 'Ozgar AI', url: 'https://ozgar.ai', display: 'ozgar.ai', kind: 'Enterprise product UI & marketing', stack: 'Next.js', note: 'Code intelligence for legacy systems', tint: ['#1f8bff', '#9fe7ff'] },
+  { name: 'Piqo Studio', url: 'https://piqo.studio', display: 'piqo.studio', kind: 'Studio site', stack: 'Next.js', tint: ['#ff5a36', '#ffd6a0'] },
+  { name: 'Notify Me', url: 'https://notify-me.io', display: 'notify-me.io', kind: 'Dashboard, onboarding & marketing', stack: 'Webflow', note: 'Shopify back-in-stock & preorder app', tint: ['#11b5a4', '#c6f432'] },
+  { name: 'Powerleaf', url: 'https://powerleaf.com', display: 'powerleaf.com', kind: 'Commercial product site', stack: 'Webflow', tint: ['#2fa84f', '#d9ffb0'] },
+  { name: 'Skale', url: 'https://skale.space', display: 'skale.space', kind: 'Interactive 3D site', stack: 'Webflow', note: 'Animation & 3D-driven', tint: ['#ff3d8b', '#ffc2dc'] },
+  { name: 'Kasra Design', url: 'https://kasradesign-web-client.vercel.app', display: 'Launching soon', kind: 'Motion-heavy studio portfolio', stack: 'Next.js', tint: ['#e0a43a', '#fff1c9'] },
 ]
 
 export const nav = [

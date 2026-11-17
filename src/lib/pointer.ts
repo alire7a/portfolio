@@ -48,34 +48,3 @@ export function useMagnetic(
     }
   }, [ref, strength, inner, tilt])
 }
-
-/** 3D card tilt with a glare highlight that follows the cursor (CSS vars --gx / --gy). */
-export function useTilt(ref: RefObject<HTMLElement | null>, max = 8) {
-  useEffect(() => {
-    const el = ref.current
-    if (!el || !finePointer() || prefersReducedMotion()) return
-    gsap.set(el, { transformPerspective: 900 })
-    const opts = { duration: 0.8, ease: 'power3.out' }
-    const rx = gsap.quickTo(el, 'rotationX', opts)
-    const ry = gsap.quickTo(el, 'rotationY', opts)
-    const move = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect()
-      const px = (e.clientX - r.left) / r.width
-      const py = (e.clientY - r.top) / r.height
-      ry((px - 0.5) * max * 2)
-      rx(-(py - 0.5) * max * 2)
-      el.style.setProperty('--gx', `${px * 100}%`)
-      el.style.setProperty('--gy', `${py * 100}%`)
-    }
-    const leave = () => {
-      rx(0)
-      ry(0)
-    }
-    el.addEventListener('pointermove', move)
-    el.addEventListener('pointerleave', leave)
-    return () => {
-      el.removeEventListener('pointermove', move)
-      el.removeEventListener('pointerleave', leave)
-    }
-  }, [ref, max])
-}

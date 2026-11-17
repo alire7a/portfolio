@@ -13,7 +13,7 @@ const sceneToNav: Record<string, string | null> = {
   skills: 'about',
   work: 'work',
   experience: 'experience',
-  awards: 'experience',
+  ai: 'experience',
   contact: 'contact',
 }
 
@@ -155,7 +155,7 @@ export function Nav() {
           ))}
         </nav>
 
-        <a ref={cta} className="nav__cta" href={`mailto:${profile.email}`}>
+        <a ref={cta} className="nav__cta" href={profile.telegram} target="_blank" rel="noreferrer" aria-label="Let’s talk on Telegram">
           <span className="nav__cta-inner" data-magnetic-inner>
             <span className="dot" aria-hidden />
             <RollText text="Let’s talk" />
@@ -197,6 +197,9 @@ export function Nav() {
         </nav>
         <div className="menu__foot">
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a href={profile.telegram} target="_blank" rel="noreferrer">
+            Telegram ↗
+          </a>
           <a href={profile.github} target="_blank" rel="noreferrer">
             GitHub ↗
           </a>

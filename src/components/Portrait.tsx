@@ -72,7 +72,7 @@ export function Portrait() {
       <figcaption className="portrait__caption portrait__chrome">
         <span className="portrait__name">{profile.name}</span>
         <span className="portrait__role">
-          {profile.current.title} @ {profile.current.company}
+          {profile.current.title}
         </span>
       </figcaption>
     </figure>

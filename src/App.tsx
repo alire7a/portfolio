@@ -6,7 +6,7 @@ import { About } from './components/About'
 import { Skills } from './components/Skills'
 import { Work } from './components/Work'
 import { Experience } from './components/Experience'
-import { Awards } from './components/Awards'
+import { AiWorkflow } from './components/AiWorkflow'
 import { Contact, Footer } from './components/Contact'
 import { useScrollChoreography, useSmoothScroll } from './lib/motion'
 
@@ -37,7 +37,7 @@ export default function App() {
         <Skills />
         <Work />
         <Experience />
-        <Awards />
+        <AiWorkflow />
         <Contact />
       </main>
       <Footer />
