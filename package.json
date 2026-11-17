@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "cutout": "swift scripts/cutout.swift public/alireza.jpg public/alireza-cutout.png 360"
+    "cutout": "swift scripts/cutout.swift public/alireza.jpg public/alireza-cutout.png 360",
+    "cv": "\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf=public/Alireza-Afshar-CV.pdf \"file://$PWD/scripts/cv.html\""
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",
